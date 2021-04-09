@@ -2,25 +2,26 @@ package com.manohar.cookbook.views
 
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.manohar.cookbook.R
 import com.manohar.cookbook.adapters.CommentsAdapter
 import com.manohar.cookbook.models.BookmarksModel
 import com.manohar.cookbook.models.CommentsModel
+import com.manohar.cookbook.models.NotesModel
 import com.manohar.cookbook.utils.PreferenceHelper
 import com.manohar.cookbook.utils.PreferenceHelper.set
 import com.manohar.cookbook.utils.getProgressDrawable
@@ -39,6 +40,9 @@ class DetailActivity : AppCompatActivity() {
    // private var notice: TextView?=null
     private var addcomment: TextInputEditText?=null
     private var postcomment: MaterialButton?=null
+    private var addnote: MaterialButton?=null
+    private var viewnotes: MaterialButton?=null
+
     private var emailname: String?=null
 
     lateinit var commentsAdapter: CommentsAdapter
@@ -98,7 +102,7 @@ class DetailActivity : AppCompatActivity() {
 
     }
 
-    private fun onclickListeners(namex:String) {
+    private fun onclickListeners(namex: String) {
 
         val helper = PreferenceHelper.defaultPrefs(this)
         if (helper.getBoolean("loggedin", false))
@@ -107,8 +111,7 @@ class DetailActivity : AppCompatActivity() {
 
             postcomment!!.setOnClickListener(View.OnClickListener {
 
-                if (helper.getBoolean("emaillogin", false))
-                {
+                if (helper.getBoolean("emaillogin", false)) {
                     val comment = addcomment!!.text.toString()
                     if (!comment.isEmpty()) {
                         val s = namex.replace("\\s".toRegex(), "")
@@ -119,9 +122,7 @@ class DetailActivity : AppCompatActivity() {
                     } else {
                         Toast.makeText(this, "Please enter something first", Toast.LENGTH_SHORT).show()
                     }
-                }
-                else
-                {
+                } else {
                     val comment = addcomment!!.text.toString()
                     if (!comment.isEmpty()) {
                         val s = namex.replace("\\s".toRegex(), "")
@@ -135,8 +136,6 @@ class DetailActivity : AppCompatActivity() {
                 }
 
 
-
-
             }
             )
         }
@@ -145,11 +144,70 @@ class DetailActivity : AppCompatActivity() {
             Toast.makeText(this, "Sign in to post comment", Toast.LENGTH_SHORT).show()
         }
 
+        addnote!!.setOnClickListener(View.OnClickListener {
+            val helperclass = PreferenceHelper.defaultPrefs(this)
+
+            if (helper.getBoolean("loggedin", false)) {
+                val factory = LayoutInflater.from(this)
+                val deleteDialogView: View = factory.inflate(R.layout.add_note_dialog, null)
+                val deleteDialog = AlertDialog.Builder(this).create()
+                deleteDialog.setView(deleteDialogView)
+
+                val text = deleteDialogView.findViewById<EditText>(R.id.setnote)
+                deleteDialogView.findViewById<View>(R.id.addnotetodb).setOnClickListener {
+
+                    if (text.text.length > 0) {
+                        val note = text.text.toString()
+                        if (helperclass.getBoolean("emaillogin", false)) {
+                            val notesModel = NotesModel(note, emailname!!)
+                            val s = namex.replace("\\s".toRegex(), "")
+                            val databaseReference = FirebaseDatabase.getInstance().getReference("notes")
+                                    .child(FirebaseAuth.getInstance().currentUser!!.getUid())
+                                    .child(s)
+
+                            databaseReference.push().setValue(notesModel)
+                            deleteDialog.cancel()
+                            Toast.makeText(this, "Note has been added", Toast.LENGTH_SHORT).show()
+                        } else {
+                            val notesModel = NotesModel(note, FirebaseAuth.getInstance().currentUser!!.displayName!!)
+                            val s = namex.replace("\\s".toRegex(), "")
+
+                            val databaseReference = FirebaseDatabase.getInstance().getReference("notes")
+                                    .child(FirebaseAuth.getInstance().currentUser!!.getUid())
+                                    .child(s)
+
+                            databaseReference.push().setValue(notesModel)
+                            deleteDialog.cancel()
+                            Toast.makeText(this, "Note has been added", Toast.LENGTH_SHORT).show()
+
+                        }
+                    } else {
+                        Toast.makeText(this, "Note must not be empty", Toast.LENGTH_SHORT).show()
+                    }
+
+
+                }
+                deleteDialog.show()
+
+            } else {
+                Toast.makeText(this, "Sign in to add notes!", Toast.LENGTH_SHORT).show()
+            }
+
+
+        })
+
+
+        viewnotes!!.setOnClickListener(View.OnClickListener {
+            val s = namex.replace("\\s".toRegex(), "")
+            val intent = Intent(this, NotesActivity::class.java)
+            intent.putExtra("ref", s)
+            startActivity(intent)
+        })
 
     }
 
     private fun checkStatus(namex: String) {
-        if (preferences!!.getBoolean(namex, false ))
+        if (preferences!!.getBoolean(namex, false))
         {
             bookmark!!.text = "Saved"
             bookmark!!.isClickable = false
@@ -158,7 +216,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
 
-    private fun setData(name:String, time:String, desc:String, image:String) {
+    private fun setData(name: String, time: String, desc: String, image: String) {
         this.name!!.text = name
         this.time!!.text = "Time Required: " + time
         this.desc!!.text = "Instructions: \n" + desc
@@ -180,10 +238,12 @@ class DetailActivity : AppCompatActivity() {
         //notice = findViewById(R.id.notice)
         addcomment = findViewById(R.id.addcomment)
         postcomment = findViewById(R.id.post)
+        addnote = findViewById(R.id.addnotes)
+        viewnotes = findViewById(R.id.viewnote)
 
     }
 
-    fun getComments(ref:String)
+    fun getComments(ref: String)
     {
 
         val s = ref.replace("\\s".toRegex(), "")
@@ -196,8 +256,8 @@ class DetailActivity : AppCompatActivity() {
 
                     for (getSnapshot: DataSnapshot in snapshot.children) {
                         val commentsModelx: CommentsModel? = getSnapshot.getValue(CommentsModel::class.java)
-                            commentslist!!.add(commentsModelx!!)
-                            commentsAdapter.updateData(commentslist!!)
+                        commentslist!!.add(commentsModelx!!)
+                        commentsAdapter.updateData(commentslist!!)
 
                     }
                 } else {
@@ -220,7 +280,7 @@ class DetailActivity : AppCompatActivity() {
 
         if (helper.getBoolean("loggedin", false))
         {
-            if (!preferences!!.getBoolean(bookmarksModel.name, false ))
+            if (!preferences!!.getBoolean(bookmarksModel.name, false))
             {
                 preferences!!.set(bookmarksModel.name, true)
                 val ref = FirebaseDatabase.getInstance().getReference("bookmarks").child(FirebaseAuth.getInstance().currentUser!!.uid).push()
