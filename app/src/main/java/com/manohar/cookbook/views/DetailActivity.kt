@@ -36,9 +36,10 @@ class DetailActivity : AppCompatActivity() {
     private var image: ImageView?=null
     private var bookmark: TextView?=null
     private var preferences:SharedPreferences?=null
-    private var notice: TextView?=null
+   // private var notice: TextView?=null
     private var addcomment: TextInputEditText?=null
     private var postcomment: MaterialButton?=null
+    private var emailname: String?=null
 
     lateinit var commentsAdapter: CommentsAdapter
     private var commentslist:ArrayList<CommentsModel>?=null
@@ -60,16 +61,36 @@ class DetailActivity : AppCompatActivity() {
         recyclerview!!.layoutManager = linearLayoutManager
         recyclerview!!.adapter = commentsAdapter
 
+        val helper = PreferenceHelper.defaultPrefs(this)
+        if (helper.getBoolean("emaillogin", false))
+        {
+            val getref = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().currentUser!!.uid)
+            getref.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists())
+                        emailname = snapshot.child("name").value.toString()
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+
+            })
+        }
+
 
         val namex = intent.getStringExtra("name").toString()
         val timex = intent.getStringExtra("time").toString()
         val descx = intent.getStringExtra("desc").toString()
         val imagex = intent.getStringExtra("image").toString()
         setData(namex, timex, descx, imagex)
+
         bookmark!!.setOnClickListener(View.OnClickListener {
             val bookmarksModel = BookmarksModel(namex, imagex, descx, timex)
             addtoBookmark(bookmarksModel)
         })
+
+
 
         checkStatus(namex)
         getComments(namex)
@@ -80,23 +101,44 @@ class DetailActivity : AppCompatActivity() {
     private fun onclickListeners(namex:String) {
 
         val helper = PreferenceHelper.defaultPrefs(this)
-
         if (helper.getBoolean("loggedin", false))
         {
+
+
             postcomment!!.setOnClickListener(View.OnClickListener {
-                val comment = addcomment!!.text.toString()
-                if (!comment.isEmpty()) {
-                    val s = namex.replace("\\s".toRegex(), "")
-                    val refx = FirebaseDatabase.getInstance().getReference("comments").child(s.toLowerCase(Locale.ROOT))
-                    val commentsModel = CommentsModel(FirebaseAuth.getInstance().currentUser!!.displayName!!, comment)
-                    refx.push().setValue(commentsModel)
-                    Toast.makeText(this, "Added comment", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this, "Please enter something first", Toast.LENGTH_SHORT).show()
+
+                if (helper.getBoolean("emaillogin", false))
+                {
+                    val comment = addcomment!!.text.toString()
+                    if (!comment.isEmpty()) {
+                        val s = namex.replace("\\s".toRegex(), "")
+                        val refx = FirebaseDatabase.getInstance().getReference("comments").child(s.toLowerCase(Locale.ROOT))
+                        val commentsModel = CommentsModel(emailname!!, comment)
+                        refx.push().setValue(commentsModel)
+                        Toast.makeText(this, "Added comment", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this, "Please enter something first", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                else
+                {
+                    val comment = addcomment!!.text.toString()
+                    if (!comment.isEmpty()) {
+                        val s = namex.replace("\\s".toRegex(), "")
+                        val refx = FirebaseDatabase.getInstance().getReference("comments").child(s.toLowerCase(Locale.ROOT))
+                        val commentsModel = CommentsModel(FirebaseAuth.getInstance().currentUser!!.displayName!!, comment)
+                        refx.push().setValue(commentsModel)
+                        Toast.makeText(this, "Added comment", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this, "Please enter something first", Toast.LENGTH_SHORT).show()
+                    }
                 }
 
 
-            })
+
+
+            }
+            )
         }
         else
         {
@@ -135,7 +177,7 @@ class DetailActivity : AppCompatActivity() {
         bookmark = findViewById(R.id.bookmarkit)
         preferences = PreferenceHelper.defaultPrefs(this)
         recyclerview = findViewById(R.id.commentsrv)
-        notice = findViewById(R.id.notice)
+        //notice = findViewById(R.id.notice)
         addcomment = findViewById(R.id.addcomment)
         postcomment = findViewById(R.id.post)
 
@@ -159,7 +201,7 @@ class DetailActivity : AppCompatActivity() {
 
                     }
                 } else {
-                    notice!!.visibility = View.VISIBLE
+                    //notice!!.visibility = View.VISIBLE
                 }
             }
 
@@ -170,9 +212,7 @@ class DetailActivity : AppCompatActivity() {
 
     }
 
-    override fun onStart() {
-        super.onStart()
-    }
+
 
     fun addtoBookmark(bookmarksModel: BookmarksModel) {
 

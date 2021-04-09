@@ -22,6 +22,7 @@ import com.manohar.cookbook.adapters.BookmarksAdapter
 import com.manohar.cookbook.adapters.CuisineAdapter
 import com.manohar.cookbook.models.BookmarksModel
 import com.manohar.cookbook.models.CuisineModel
+import com.manohar.cookbook.utils.PreferenceHelper
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -37,6 +38,7 @@ class ProfileFragment : Fragment() {
     var progressBar: ProgressBar?=null
     var dataIsReady:Boolean = false
     var notex:TextView?=null
+    var username:TextView?=null
 
     var timer: Timer?=null
 
@@ -51,6 +53,7 @@ class ProfileFragment : Fragment() {
         adapterx = BookmarksAdapter(bookmarklist!!, requireContext())
         recyclerView!!.adapter = adapterx
 
+        setname()
         loadDefaultdata()
         keepCheck()
 
@@ -62,10 +65,50 @@ class ProfileFragment : Fragment() {
         recyclerView = root.findViewById(R.id.bookmarksrv)
         progressBar = root.findViewById(R.id.progress)
         notex = root.findViewById(R.id.notex)
+        username = root.findViewById(R.id.username)
         val linearLayoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         recyclerView!!.layoutManager = linearLayoutManager
+
     }
+
+    fun setname()
+    {
+        val helper = PreferenceHelper.defaultPrefs(requireContext())
+        if (helper.getBoolean("loggedin", false))
+        {
+
+            if (helper.getBoolean("emaillogin", false))
+            {
+                val getref = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().currentUser!!.uid)
+                getref.addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists())
+                        {
+                           val emailname = snapshot.child("name").value.toString()
+                            username!!.text = "Hi " + emailname
+                        }
+
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+
+                    }
+
+                })
+            }
+            else
+            {
+                username!!.text = "Hi " +  FirebaseAuth.getInstance().currentUser!!.displayName
+            }
+        }
+        else
+        {
+            username!!.text = "Hello Fooody"
+        }
+
+    }
+
 
     private fun loadDefaultdata() {
         val classref = FirebaseDatabase.getInstance().getReference("bookmarks").child(FirebaseAuth.getInstance().currentUser!!.uid)

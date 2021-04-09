@@ -1,6 +1,7 @@
 package com.manohar.cookbook.authentication
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -16,6 +17,8 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
 import com.manohar.cookbook.views.MainActivity
 import com.manohar.cookbook.R
+import com.manohar.cookbook.utils.PreferenceHelper
+import com.manohar.cookbook.utils.PreferenceHelper.set
 
 class SignupActivity : AppCompatActivity() {
 
@@ -26,11 +29,15 @@ class SignupActivity : AppCompatActivity() {
     private var signup:MaterialButton?=null
     private var mAuth:FirebaseAuth?=null
     var temp:Boolean= true
+    var sharedPreferences: SharedPreferences?=null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
         val actionBar = supportActionBar
         actionBar!!.hide()
+        sharedPreferences = PreferenceHelper.defaultPrefs(this)
 
         initializeViews()
         mAuth = FirebaseAuth.getInstance()
@@ -92,6 +99,10 @@ class SignupActivity : AppCompatActivity() {
                 mAuth!!.createUserWithEmailAndPassword(Email, Password).addOnCompleteListener(
                     OnCompleteListener<AuthResult?> { task ->
                         if (task.isSuccessful) {
+
+                            sharedPreferences!!.edit().putBoolean("loggedin", true).apply()
+                            sharedPreferences!!.edit().putBoolean("emaillogin", true).apply()
+
                             Toast.makeText(
                                 this@SignupActivity,
                                 "Registered Successfully",

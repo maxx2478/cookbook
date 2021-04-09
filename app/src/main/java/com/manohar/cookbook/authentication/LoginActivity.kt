@@ -64,7 +64,9 @@ class LoginActivity : AppCompatActivity() {
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        sharedPreferences!!.set("loggedin", true)
+
+                        sharedPreferences!!.edit().putBoolean("loggedin", true).apply()
+                        sharedPreferences!!.edit().putBoolean("emaillogin", true).apply()
 
                         startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                         finish()
@@ -128,7 +130,8 @@ class LoginActivity : AppCompatActivity() {
                         FirebaseDatabase.getInstance().getReference("users").child(user.uid)
                             .child("email").setValue(user.email)
                     }
-                    sharedPreferences!!.set("loggedin", true)
+
+                    sharedPreferences!!.edit().putBoolean("loggedin", true).apply()
 
                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                     finish()

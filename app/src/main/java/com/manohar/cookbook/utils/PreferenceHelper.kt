@@ -31,6 +31,7 @@ object PreferenceHelper {
         else -> throw UnsupportedOperationException("Not yet implemented")
     }
 
+
     /**
      * finds a preference based on the given [key].
      * [T] is the type of value

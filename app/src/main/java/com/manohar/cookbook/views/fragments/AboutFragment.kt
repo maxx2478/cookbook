@@ -19,6 +19,7 @@ class AboutFragment : Fragment() {
     var root:View?=null
     var notice: TextView?=null
     var signin:MaterialButton?=null
+    var signout:MaterialButton?=null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,10 +31,11 @@ class AboutFragment : Fragment() {
         val helper = PreferenceHelper.defaultPrefs(requireContext())
         notice = root!!.findViewById(R.id.notice)
         signin = root!!.findViewById(R.id.siggin)
+        signout = root!!.findViewById(R.id.signout)
 
         if (helper.getBoolean("loggedin", false))
         {
-
+            signout!!.visibility = View.VISIBLE
         }
         else
         {
@@ -44,6 +46,15 @@ class AboutFragment : Fragment() {
 
 
         signin!!.setOnClickListener(View.OnClickListener {
+            helper.edit().clear().apply()
+            FirebaseAuth.getInstance().signOut()
+            startActivity(Intent(requireContext(), LoginActivity::class.java))
+            requireActivity().finish()
+
+        })
+
+        signout!!.setOnClickListener(View.OnClickListener {
+            helper.edit().clear().apply()
             FirebaseAuth.getInstance().signOut()
             startActivity(Intent(requireContext(), LoginActivity::class.java))
             requireActivity().finish()

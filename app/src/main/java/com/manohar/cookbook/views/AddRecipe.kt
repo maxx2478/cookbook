@@ -176,10 +176,10 @@ class AddRecipe : AppCompatActivity() {
 
     private fun uploadData(imagedownloadurl: String) {
         val namex: String = recipename!!.text.toString()
-        val timex: String = instructions!!.text.toString()
-        val descx: String = timetaken!!.text.toString()
+        val timex: String = timetaken!!.text.toString()
+        val descx: String = instructions!!.text.toString()
 
-        val userModel = RecipiModel(namex,imagedownloadurl, descx , timex)
+        val userModel = RecipiModel(namex, imagedownloadurl, descx , timex)
         val databaseReference = FirebaseDatabase.getInstance().getReference(selectedItem).push()
         databaseReference.setValue(userModel)
         Toast.makeText(this, "Added Successfully", Toast.LENGTH_SHORT).show()

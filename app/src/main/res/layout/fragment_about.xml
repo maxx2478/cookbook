@@ -37,5 +37,15 @@
         android:backgroundTint="#FF8A8A"
         android:text="Sign in "/>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/signout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        android:backgroundTint="#FF8A8A"
+        android:text="Sign out "/>
+
 
 </RelativeLayout>
