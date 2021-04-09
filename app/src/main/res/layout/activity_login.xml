@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".authentication.LoginActivity">
+
+    <TextView
+        android:id="@+id/header_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="Cook Book"
+        android:textColor="#F28282"
+        android:textSize="40sp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@id/header_title"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center"
+            android:text="Welcome Back!,\nLogin to Continue"
+            android:textColor="#F28282"
+            android:textSize="16sp"
+            />
+
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_marginTop="20dp"
+            android:gravity="start"
+            android:text="Enter your Email address"
+            android:textAllCaps="true"
+            android:textColor="#F28282"
+            android:textSize="15sp"
+            />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_marginTop="20dp"
+            android:gravity="start"
+            android:text="Enter password"
+            android:textAllCaps="true"
+            android:textColor="#F28282"
+            android:textSize="15sp"
+            />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/password"
+            android:inputType="textPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:id="@+id/login"
+            android:text="Login"
+            android:backgroundTint="#FF9797"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_marginTop="20dp"
+            android:id="@+id/signup"
+            android:onClick="signupActivity"
+            android:gravity="center"
+            android:text="No account? Click here to signup !"
+            android:textAllCaps="true"
+            android:textColor="#F28282"
+            android:textSize="15sp"
+            />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="OR"
+            android:textAllCaps="true"
+            android:textColor="#F28282"
+            android:textSize="15sp"
+            />
+
+       <com.google.android.material.button.MaterialButton
+           android:id="@+id/glogin"
+           android:onClick="googleLogin"
+           android:layout_width="match_parent"
+           android:layout_height="50dp"
+           android:drawableLeft="@drawable/google"
+           android:text="Sign in using Google"
+           android:layout_marginTop="10dp"
+           android:backgroundTint="@color/white"
+           android:textColor="@color/black"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_marginTop="30dp"
+            android:onClick="skipLogin"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="Skip for now >"
+            android:textAllCaps="true"
+            android:textColor="#F28282"
+            android:textSize="15sp"
+            />
+
+
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

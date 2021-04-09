@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".views.AddRecipe">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+
+
+
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Know a tasty recipe?"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:fontFamily="@font/poppins_medium"
+        android:layout_marginTop="15sp"
+        android:textAllCaps="true"
+        android:textSize="25sp"/>
+
+    <TextView
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:fontFamily="@font/poppins_medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add it here!"
+        android:textAllCaps="true"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:layout_margin="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:layout_marginTop="20dp"
+        android:gravity="start"
+        android:text="Enter name of your recipe"
+        android:textAllCaps="true"
+        android:textColor="#F28282"
+        android:textSize="15sp"
+        />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/recipename"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:gravity="start"
+        android:text="enter instructions"
+        android:textAllCaps="true"
+        android:textColor="#F28282"
+        android:textSize="15sp"
+        />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/instructions"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:gravity="start"
+        android:text="enter time required"
+        android:textAllCaps="true"
+        android:textColor="#F28282"
+        android:textSize="15sp"
+        />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/timetaken"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:gravity="start"
+        android:text="Choose Cuisine Category"
+        android:textAllCaps="true"
+        android:textColor="#F28282"
+        android:textSize="15sp"
+        />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:id="@+id/placeholder"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_launcher_background"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="chooseImage"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:text="Choose Image"
+        android:backgroundTint="#FEA0A0"
+        android:id="@+id/chooseimage"
+        android:fontFamily="@font/poppins_medium"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="submit"
+        android:layout_margin="10dp"
+        android:text="Submit"
+        android:backgroundTint="#FEA0A0"
+        android:id="@+id/submit"
+        android:fontFamily="@font/poppins_medium"/>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

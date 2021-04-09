@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/hometitle"
+        />
+
+
+    <item
+        android:id="@+id/bookmarksx"
+        android:icon="@drawable/user"
+        android:title="@string/usertitle"
+        />
+
+    <item
+        android:id="@+id/about"
+        android:icon="@drawable/ic_baseline_info_24"
+        android:title="@string/info"
+        />
+
+
+</menu>

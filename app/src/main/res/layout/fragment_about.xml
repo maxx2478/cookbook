@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".views.fragments.AboutFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="19sp"
+        android:text="Created by Manohar Patil" />
+
+    <TextView
+        android:id="@+id/notice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:gravity="center"
+        android:layout_above="@id/siggin"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="15sp"
+        android:text="Sign in to get more features like saving the recipe and posting your own recipe as well" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/siggin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        android:backgroundTint="#FF8A8A"
+        android:text="Sign in "/>
+
+
+</RelativeLayout>
